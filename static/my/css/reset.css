@@ -1,0 +1,13 @@
+/*body的边框置为0*/
+body {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+p {
+    margin: 0;
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load my_tag %}
+<head>
+    <meta charset="UTF-8">
+    <title>Y.个人博客</title>
+    <link rel="stylesheet" href="/static/my/css/reset.css">
+    <link rel="stylesheet" href="/static/my/css/index.css">
+    <script src="/static/vue/vue.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <link rel="stylesheet" :href="'/static/my/css/theme/' + theme + '.css'">
+    {#页面的头部#}
+    <nav>
+        <div class="left">
+            <a href="/">首页</a>
+            <a href="news/">新闻</a>
+            <a href="#">心情</a>
+            <a href="#">关于</a>
+        </div>
+        <div class="right">
+            <img v-show="theme === 'light'" src="/static/my/img/nav/light.svg" @click="setTheme('dark')" alt="">
+            <img v-show="theme === 'dark'" src="/static/my/img/nav/dark.svg" @click="setTheme('light')" alt="">
+            {#            <a href="#" @click="setTheme('light')">白色主题</a>#}
+            {#            <a href="#" @click="setTheme('dark')">黑色主题</a>#}
+            <a href="#">登录</a>
+            <a href="#">注册</a>
+        </div>
+    </nav>
+
+    {% banner 'index' %}
+
+    {#页面中间部分#}
+    <main>
+        {% block main %}
+            Y.个人博客
+        {% endblock %}
+    </main>
+    {#页面的尾部#}
+    <footer>
+        <div class="left">
+            <p class="thank">Thank For</p>
+            <p class="site_info">
+                <span><img src="/static/my/img/footer/tencent.png" alt="">腾讯云服务器</span>
+                <span><img src="/static/my/img/footer/tencent.png" alt="">腾讯云SSL证书</span>
+                <span><img src="/static/my/img/footer/qiniu.png" alt="">七牛云存储</span>
+            </p>
+            <p class="version">
+                <span>version</span>
+                <span>1.0.0</span>
+            </p>
+            <p>建站日期：2022-04-09</p>
+            <p class="beian">
+                <a href="https://beian.miit.gov.cn/">
+                    <img src="/static/my/img/footer/beian.png" alt="">备案号XXX
+                </a>
+            </p>
+        </div>
+        <div class="right">
+            <div class="contact">
+                <div>
+                    <img class="svg" src="/static/my/img/footer/qq_icon.svg" alt="">
+                    <img class="qq_code" src="/static/my/img/footer/qq.png" alt="">
+                </div>
+                <div>
+                    <img class="svg" src="/static/my/img/footer/weixin_icon.svg" alt="">
+                    <img class="weixin_code" src="/static/my/img/footer/weixin.png" alt="">
+                </div>
+                <div>
+                    <a class="gitee" href="https://gitee.com/cuizh1/dashboard/projects">
+                        <img class="svg" src="/static/my/img/footer/gitee_icon.svg" alt="">
+                    </a>
+                </div>
+                <div>
+                    <a class="github" href="https://github.com/c727657851?tab=repositories">
+                        <img class="svg" src="/static/my/img/footer/github_icon.svg" alt="">
+                    </a>
+                </div>
+                <div>
+                    <a class="csdn" href="https://blog.csdn.net/c727657851?type=blog">
+                        <img class="svg" src="/static/my/img/footer/csdn_icon.svg" alt="">
+                    </a>
+                </div>
+            </div>
+            <p>
+                联系邮箱：727657851@qq.com
+            </p>
+        </div>
+    </footer>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        delimiters: ["[[", "]]"],
+        data: {
+            theme: 'light', //默认白色主题
+        },
+        created() {
+            this.init_theme()
+        },
+        methods: {
+            // 初始化主题
+            init_theme() {
+                // 读取存储的主题信息
+                let theme = localStorage.getItem('theme')
+                if (theme) {
+                    this.theme = theme
+                }
+            },
+            setTheme(themeName) {
+                this.theme = themeName
+                // 持久化存储
+                localStorage.setItem('theme', themeName)
+            },
+
+        }
+    })
+
+    // 轮播图
+    let menu_img = document.querySelectorAll('.dynamic_shuffl')
+
+
+    // 获取长度
+    let menu_length = menu_img.length
+    // 初始位置
+    let index = 0
+    let timer = null;
+    clearInterval(timer)//清除定时器
+    timer = setInterval(() => {
+        index++
+        // 到头，从0开始
+        if (index === menu_length) {
+            index = 0
+        }
+        // 样式复原操作
+        for (let i of menu_img) {
+            i.style.opacity = 0
+        }
+        menu_img[index].style.opacity = 1
+    }, 5000)
+</script>
+</body>
+</html>
